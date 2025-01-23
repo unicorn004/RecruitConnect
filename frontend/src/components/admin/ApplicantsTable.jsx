@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { MoreHorizontal } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
-import { APPLICATION_API_END_POINT } from '@/utils/constant';
+import { APPLICATION_API_END_POINT, GET_PDF_API_END_POINT } from '@/utils/constant';
 import axios from 'axios';
 
 const shortlistingStatus = ["Accepted", "Rejected"];
@@ -25,6 +25,16 @@ const ApplicantsTable = () => {
             toast.error(error.response.data.message);
         }
     }
+
+    const downloadResume = (fileUrl) => {
+        // Build the full URL to get the PDF and trigger the download
+        const pdfUrl = `${GET_PDF_API_END_POINT}/get-pdf?fileUrl=${encodeURIComponent(fileUrl)}`;
+        // Trigger file download (no new tab, it triggers the browser's download dialog)
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = 'Resume.pdf';  // Optionally specify a filename
+        link.click();
+    };
 
     return (
         <div>
