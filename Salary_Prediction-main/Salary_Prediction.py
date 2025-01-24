@@ -18,7 +18,8 @@
 
 # In[157]:
 
-
+import matplotlib
+matplotlib.use('Agg')
 # Importing Libraries
 import pandas as pd 
 import numpy as np
