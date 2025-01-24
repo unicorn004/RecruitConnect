@@ -1,4 +1,3 @@
-import React from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { Avatar, AvatarImage } from '../ui/avatar'
@@ -46,6 +45,7 @@ const Navbar = () => {
                                 <>
                                     <li><Link to="/">Home</Link></li>
                                     <li><Link to="/jobs">Jobs</Link></li>
+                                    <li><Link to="/explore">Explore</Link></li>
                                     <li><Link to="/browse">Browse</Link></li>
                                 </>
                             )
