@@ -15,6 +15,7 @@ export const register = async (req, res) => {
             });
         }
 
+        // Get the uploaded file from the request
         const file = req.file;
         if (!file) {
             return res.status(400).json({
@@ -23,8 +24,30 @@ export const register = async (req, res) => {
             });
         }
 
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        // Check the file type
+        const isImage = file.mimetype.startsWith("image/");
+        const isPdf = file.mimetype === "application/pdf";
+
+        let cloudResponse;
+
+        // If it's an image, upload it to Cloudinary as a profile photo
+        if (isImage) {
+            const fileUri = getDataUri(file);
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: "profiles", // Optionally specify a folder in Cloudinary
+                resource_type: "image"
+            });
+        } 
+
+        // If it's a PDF, upload it to Cloudinary as a resume
+        if (isPdf) {
+            const fileUri = getDataUri(file);
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: "resumes", // Optionally specify a folder in Cloudinary
+                resource_type: "raw", // PDF is a raw file type
+                public_id: file.originalname.split(".")[0], // Using the file name as the public id
+            });
+        }
 
         const user = await User.findOne({ email });
         if (user) {
@@ -36,16 +59,30 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await User.create({
+        const userData = {
             fullname,
             email,
             phoneNumber,
             password: hashedPassword,
             role,
-            profile: {
+        };
+
+        // If the file was a profile photo (image), add it to the user data
+        if (isImage && cloudResponse) {
+            userData.profile = {
                 profilePhoto: cloudResponse.secure_url,
-            }
-        });
+            };
+        }
+
+        // If the file was a resume (PDF), add it to the user data
+        if (isPdf && cloudResponse) {
+            userData.profile = {
+                resume: cloudResponse.secure_url,
+                resumeOriginalName: file.originalname, // Store the original filename
+            };
+        }
+
+        await User.create(userData);
 
         return res.status(201).json({
             message: "Account created successfully.",
