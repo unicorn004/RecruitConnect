@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Get the base URL from the environment variable, defaulting to localhost for local development
-const BASE_API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000"; 
+// Get the base URL from the environment variable
+const BASE_API_URL = process.env.REACT_APP_API_URL; 
 
 // API endpoint for salary prediction
 export const PREDICT_SALARY_API = `${BASE_API_URL}/api/v1/salary/predict`; // This will dynamically change based on the environment variable
