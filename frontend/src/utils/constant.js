@@ -1,4 +1,4 @@
-const BASE_API_URL = process.env.REACT_APP_API_URL;
+const BASE_API_URL = import.meta.env.REACT_APP_API_URL;
 
 export const USER_API_END_POINT = `${BASE_API_URL}/api/v1/user`;
 export const JOB_API_END_POINT = `${BASE_API_URL}/api/v1/job`;

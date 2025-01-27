@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Get the base URL from the environment variable
-const BASE_API_URL = process.env.REACT_APP_API_URL; 
+const BASE_API_URL = import.meta.env.REACT_APP_API_URL; 
 
 // API endpoint for salary prediction
 export const PREDICT_SALARY_API = `${BASE_API_URL}/api/v1/salary/predict`; // This will dynamically change based on the environment variable
