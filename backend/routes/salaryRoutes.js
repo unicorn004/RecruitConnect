@@ -9,7 +9,7 @@ router.post('/predict', async (req, res) => {
 
     try {
         // Make a POST request to the Flask API
-        const response = await axios.post("https://your-flask-api.onrender.com/predict", {
+        const response = await axios.post("https://recruit-connect-model.onrender.com/predict", {
             age,
             gender,
             educationLevel,
