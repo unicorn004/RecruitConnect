@@ -21,7 +21,6 @@ app.use(cookieParser());
 const corsOptions = {
     origin: function (origin, callback) {
       const allowedOrigins = [
-        'http://localhost:5173', // Local development frontend
         'https://recruit-connect.vercel.app' // Deployed frontend
       ];
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {

@@ -143,11 +143,17 @@ export const login = async (req, res) => {
             profile: user.profile
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
+        return res.status(200).cookie("token", token, {
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+            httpOnly: true,  // Secure flag for HTTP requests only (prevents client-side JavaScript from accessing it)
+            sameSite: 'strict', // Prevents CSRF
+            secure: process.env.NODE_ENV === 'production', // Set to true in production (HTTPS)
+        }).json({
             message: `Welcome back ${user.fullname}`,
             user,
             success: true
-        })
+        });
+        
     } catch (error) {
         console.log(error);
     }
