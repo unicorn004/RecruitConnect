@@ -4,11 +4,15 @@ const storage = multer.memoryStorage();
 
 // Add a file filter to validate the file type
 const fileFilter = (req, file, cb) => {
-    // Check the file's MIME type
+    // Accept PDF files
     if (file.mimetype === "application/pdf") {
-        cb(null, true); // Accept the file
+        cb(null, true); // Accept the PDF file
+    }
+    // Accept image files (jpg, jpeg, png, gif, etc.)
+    else if (file.mimetype.startsWith("image/")) {
+        cb(null, true); // Accept the image file
     } else {
-        cb(new Error("Only PDF files are allowed"), false); // Reject the file
+        cb(new Error("Only image and PDF files are allowed"), false); // Reject non-image and non-PDF files
     }
 };
 
